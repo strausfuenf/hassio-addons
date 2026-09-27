@@ -9,7 +9,7 @@ FROM vaultwarden/server:1.37.3 as vaultwarden_src
 ###############################################################################
 # hadolint ignore=DL3006
 
-FROM ghcr.io/hassio-addons/debian-base:9.4.0
+FROM ghcr.io/hassio-addons/debian-base:9.5.0
 # Set shell
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 

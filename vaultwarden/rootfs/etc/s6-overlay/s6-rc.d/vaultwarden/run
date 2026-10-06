@@ -117,7 +117,7 @@ ssh_keys=$(bashio::config 'ssh_keys')
 #Enable or Disable SSH Agent and Keys
 if [  $ssh_keys ]; then
 echo "Enable SSH Features"
-ssh_keys_option="ssh-key-vault-item,ssh-agent"
+ssh_keys_option="ssh-agent-v2"
 export EXPERIMENTAL_CLIENT_FEATURE_FLAGS="${ssh_keys_option}"
 fi
 

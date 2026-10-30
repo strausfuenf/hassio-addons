@@ -1,6 +1,6 @@
 ---
 name: Vaultwarden (Bitwarden)
-version: "0.6.4.1"
+version: "0.6.4.2"
 slug: vaultwarden
 description: Open source password management solution
 url: https://github.com/StrausFuenf/hassio-addons/tree/main/vaultwarden
@@ -18,7 +18,8 @@ privileged:
   - NET_ADMIN
   - NET_RAW
 options:
-  fail2ban: false  
+  fail2ban: false 
+  custom_environment_variables: ""
 schema:
   cf_token: str?
   cfuser: str?
@@ -29,3 +30,4 @@ schema:
   push_enabled: bool?
   push_server: list(EU|US)?
   ssh_keys: bool?
+  custom_environment_variables: str?

@@ -17,6 +17,8 @@ declare push_relay
 declare push_identity_uri
 declare ssh_keys
 declare ssh_keys_option
+declare variable_name
+declare variable_value
 # Set defaults
 export DATA_FOLDER=/data
 export ROCKET_PORT=80
@@ -120,6 +122,33 @@ echo "Enable SSH Features"
 ssh_keys_option="ssh-agent-v2"
 export EXPERIMENTAL_CLIENT_FEATURE_FLAGS="${ssh_keys_option}"
 fi
+
+# Load custom environment variables
+custom_environment_variables=$(bashio::config 'custom_environment_variables')
+
+if [ -n "${custom_environment_variables}" ]; then
+    bashio::log.info "Loading custom environment variables..."
+
+    while IFS= read -r line || [ -n "$line" ]; do
+        # Ignore empty lines and comments
+        [[ -z "$line" || "$line" =~ ^[[:space:]]*# ]] && continue
+
+        # Split variable name and value
+        variable_name="${line%%=*}"
+        variable_value="${line#*=}"
+
+        # Remove whitespace around variable name
+        variable_name="$(echo "$variable_name" | xargs)"
+
+        if [[ "$variable_name" =~ ^[A-Za-z_][A-Za-z0-9_]*$ ]] && [ "$variable_value" != "$line" ]; then
+            export "$variable_name=$variable_value"
+            bashio::log.info "Loaded custom variable: ${variable_name}"
+        else
+            bashio::log.warning "Skipping invalid environment variable entry"
+        fi
+    done <<< "$custom_environment_variables"
+fi
+
 
 # Always enable Websockets
 export WEBSOCKET_ENABLED=true
